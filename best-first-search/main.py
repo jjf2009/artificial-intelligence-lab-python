@@ -47,7 +47,4 @@ if __name__ == "__main__":
         "D": 8, "E": 0, "F": 6, "G": 6, "H": 3,
     }
 
-    print(
-        "Best-First Search S -> E:",
-        best_first_search(adjacency_list, "S", "E", heuristics),
-    )
+    print("Best-First Search S -> E:",best_first_search(adjacency_list, "S", "E", heuristics),)
