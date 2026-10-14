@@ -2,18 +2,16 @@ from heapq import heappush, heappop
 
 
 def a_star_search(graph, start, goal, heuristics):
-    open_list = [(heuristics[start], 0, start)]  # (f = g + h, g, vertex)
+    open_list = [(heuristics[start], 0, start)] 
+    closed_list = []
     g_score = {start: 0}
     parent = {start: None}
 
     while open_list:
         f, g, vertex = heappop(open_list)
-
-        # Skip stale heap entries; a cheaper path to this vertex was found after
-        # it was queued. Reopening this way keeps A* optimal even when the
-        # heuristic is admissible but not consistent.
         if g > g_score[vertex]:
             continue
+        closed_list.append((vertex, parent[vertex], f))
         if vertex == goal:
             break
 
@@ -24,6 +22,14 @@ def a_star_search(graph, start, goal, heuristics):
                 parent[neighbour] = vertex
                 heappush(open_list, (tentative_g + heuristics[neighbour], tentative_g, neighbour))
 
+    final_open_list = [
+        (node, parent.get(node), f)
+        for f, g, node in open_list
+        if g == g_score[node]
+    ]
+    print("Final open list:", final_open_list)
+    print("Final closed list:", closed_list)
+
     if goal not in parent:
         return None, float("inf")
 
@@ -33,11 +39,11 @@ def a_star_search(graph, start, goal, heuristics):
         path.append(node)
         node = parent[node]
     path.reverse()
+
     return path, g_score[goal]
 
 
 if __name__ == "__main__":
-    # graph[vertex] = list of (neighbour, edge_cost)
     graph = {
         "S": [("A", 1), ("B", 4)],
         "A": [("B", 2), ("C", 5), ("G", 12)],

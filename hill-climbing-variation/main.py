@@ -1,42 +1,47 @@
-import random
+def f(x, y):
+    return -pow(x, 2) + 2 * y + 20
 
 
-def f(x):
-    return -pow(x, 2) + 5
+def neighbours(x, y, step):
+    return [
+        (x - step, y),
+        (x + step, y),
+        (x, y - step),
+        (x, y + step),
+    ]
 
 
-def neighbours(x, step):
-    return x - step, x + step
-
-
-def steepest_ascent(start, step=0.1):
-    x = start
-    print(f"start: x={x:.4f}, f(x)={f(x):.4f}")
-    while True:
-        n1, n2 = neighbours(x, step)
-        best = max((n1, n2), key=f)
-        if f(best) > f(x):
-            x = best
-            print(f"step:  x={x:.4f}, f(x)={f(x):.4f}")
+def steepest_ascent(start, step=0.1, max_iters=100):
+    x, y = start
+    print(f"start: x={x:.4f}, y={y:.4f}, f={f(x, y):.4f}")
+    for _ in range(max_iters):
+        best = max(neighbours(x, y, step), key=lambda p: f(*p))
+        if f(*best) > f(x, y):
+            x, y = best
+            print(f"step:  x={x:.4f}, y={y:.4f}, f={f(x, y):.4f}")
         else:
-            return x
+            break
+    return x, y
 
 
-def random_restart(step=0.1, restarts=5, low=-10, high=10):
-    best_x = None
-    for r in range(1, restarts + 1):
-        start = random.uniform(low, high)
-        peak = steepest_ascent(start, step)
-        print(f"restart {r}: start={start:.4f} -> peak x={peak:.4f}, f={f(peak):.4f}\n")
-        if best_x is None or f(peak) > f(best_x):
-            best_x = peak
-    return best_x
+def stochastic_hill_climbing(start, step=0.1, max_iters=10):
+    x, y = start
+    print(f"start: x={x:.4f}, y={y:.4f}, f={f(x, y):.4f}")
+    for _ in range(max_iters):
+        best = max(neighbours(x, y, step), key=lambda p: f(*p))
+        if f(*best) > f(x, y):
+            x, y = best
+            print(f"step:  x={x:.4f}, y={y:.4f}, f={f(x, y):.4f}")
+        else:
+            break
+    return x, y
 
 
 if __name__ == "__main__":
-    print("=== Steepest-Ascent Hill Climbing ===")
-    print("Peak found at x =", round(steepest_ascent(3), 4))
+    print("Steepest-Ascent Hill Climbing")
+    peak = steepest_ascent((3, 0))
+    print("Peak:", tuple(round(c, 4) for c in peak), "f =", round(f(*peak), 4))
 
-    print("\n=== Random-Restart Hill Climbing ===")
-    best = random_restart()
-    print("Best peak over all restarts at x =", round(best, 4))
+    print("\nStochastic Hill Climbing")
+    peak = stochastic_hill_climbing((3, 0))
+    print("Peak:", tuple(round(c, 4) for c in peak), "f =", round(f(*peak), 4))
