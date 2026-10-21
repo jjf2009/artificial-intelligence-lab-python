@@ -44,15 +44,21 @@ def a_star_search(graph, start, goal, heuristics):
 
 
 if __name__ == "__main__":
-    graph = {
-        "S": [("A", 1), ("B", 4)],
-        "A": [("B", 2), ("C", 5), ("G", 12)],
-        "B": [("C", 2)],
-        "C": [("G", 3)],
-        "G": [],
-    }
-    heuristics = {"S": 7, "A": 6, "B": 2, "C": 1, "G": 0}
+ graph = {
+    "S": [("A", 1), ("B", 4)],
+    "A": [("B", 2), ("C", 5), ("D", 7)],
+    "B": [("C", 2), ("E", 6)],
+    "C": [("F", 3), ("G", 8)],
+    "D": [("G", 9)],
+    "E": [("G", 5), ("H", 2)],
+    "F": [("G", 3)],
+    "H": [("G", 1)],
+    "G": [],
+}
 
-    path, cost = a_star_search(graph, "S", "G", heuristics)
-    print("A* path S -> G:", path)
-    print("Total cost:", cost)
+heuristics = {"S": 9, "A": 8, "B": 6, "C": 4, "D": 7,
+              "E": 2, "F": 2, "H": 1, "G": 0}
+
+path, cost = a_star_search(graph, "S", "G", heuristics)
+print("A* path S -> G:", path)
+print("Total cost:", cost)

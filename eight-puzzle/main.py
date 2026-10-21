@@ -1,80 +1,70 @@
-from heapq import heappush, heappop
+GOAL = (1, 2, 3,
+        4, 5, 6,
+        7, 8, 0)
 
-GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # 0 is the blank tile
 
-
-def manhattan(state):
-    """Sum of tile distances from their goal positions (admissible heuristic)."""
-    distance = 0
-    for index, tile in enumerate(state):
-        if tile == 0:
-            continue
-        goal_index = tile - 1
-        distance += abs(index // 3 - goal_index // 3) + abs(index % 3 - goal_index % 3)
-    return distance
+def heuristic(state):
+    return sum(tile != goal and tile != 0 for tile, goal in zip(state, GOAL))
 
 
 def neighbours(state):
-    """Slide the blank up/down/left/right; yield the resulting states."""
     blank = state.index(0)
-    row, col = blank // 3, blank % 3
-    moves = []
-    if row > 0:
-        moves.append(blank - 3)
-    if row < 2:
-        moves.append(blank + 3)
-    if col > 0:
-        moves.append(blank - 1)
-    if col < 2:
-        moves.append(blank + 1)
-    for swap in moves:
-        new = list(state)
-        new[blank], new[swap] = new[swap], new[blank]
-        yield tuple(new)
+    row = blank // 3
+    col = blank % 3
+    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    result = []
 
+    for dr, dc in moves:
+        new_row = row + dr
+        new_col = col + dc
 
-def solve(start):
-    """A* search over the 8-puzzle state space using the Manhattan heuristic."""
-    open_list = [(manhattan(start), 0, start)]
-    g_score = {start: 0}
-    parent = {start: None}
+        if 0 <= new_row < 3 and 0 <= new_col < 3:
+            new_blank = new_row * 3 + new_col
+            next_state = list(state)
+            next_state[blank], next_state[new_blank] = (
+                next_state[new_blank], next_state[blank]
+            )
+            result.append(tuple(next_state))
 
-    while open_list:
-        f, g, state = heappop(open_list)
-        if state == GOAL:
-            break
-        for nxt in neighbours(state):
-            tentative_g = g + 1
-            if nxt not in g_score or tentative_g < g_score[nxt]:
-                g_score[nxt] = tentative_g
-                parent[nxt] = state
-                heappush(open_list, (tentative_g + manhattan(nxt), tentative_g, nxt))
+    return result
 
-    if GOAL not in parent:
-        return None
+def hill_climbing(start):
 
-    path = []
-    node = GOAL
-    while node is not None:
-        path.append(node)
-        node = parent[node]
-    path.reverse()
+    state = tuple(start)
+    path = [state]
+    visited = {state}
+
+    while state != GOAL:
+        choices = [s for s in neighbours(state) if s not in visited]
+        if not choices:
+            return None
+        best = min(choices, key=heuristic)
+        if heuristic(best) >= heuristic(state):
+            return None
+
+        state = best
+        visited.add(state)
+        path.append(state)
+
     return path
 
 
 def show(state):
-    for r in range(0, 9, 3):
-        print(" ".join(str(t) if t else "_" for t in state[r:r + 3]))
+    for row in range(0, 9, 3):
+        print(" ".join(str(tile) if tile else "_" for tile in state[row:row + 3]))
 
 
 if __name__ == "__main__":
-    start = (1, 2, 3, 4, 0, 6, 7, 5, 8)
-    path = solve(start)
+    start = (1, 2, 3,
+             4, 0, 6,
+             7, 5, 8)
+
+    path = hill_climbing(start)
+
     if path is None:
-        print("This configuration is unsolvable.")
+        print("Hill climbing got stuck before reaching the goal.")
     else:
-        print(f"Solved in {len(path) - 1} moves:\n")
-        for step, state in enumerate(path):
-            print(f"Move {step}:")
+        for move, state in enumerate(path):
+            print(f"Move: {move} (H={heuristic(state)}):")
             show(state)
             print()
