@@ -55,9 +55,13 @@ def show(state):
 
 
 if __name__ == "__main__":
-    start = (1, 2, 3,
-             4, 0, 6,
-             7, 5, 8)
+    start = (1, 3, 2,
+             5, 0, 3,
+             8, 7, 8)
+
+    # GOAL =(1, 2, 3,
+    #     4, 5, 6,
+    #     7, 8, 0)
 
     path = hill_climbing(start)
 

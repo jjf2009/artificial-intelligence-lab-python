@@ -1,35 +1,49 @@
 % AI Lab - Experiment 10: Logical inference using Resolution in Prolog
-% Prolog proves goals by SLD-resolution (a refutation procedure): to prove a
-% goal it repeatedly resolves it against program clauses until it reaches the
-% empty clause. This file gives a knowledge base whose queries exercise that.
-% Run with SWI-Prolog:  swipl resolution.pl   then try the queries below.
+
+
 
 % ---- Facts ----------------------------------------------------------------
-man(socrates).
-man(plato).
-greek(socrates).
+cat(tom).
+lovestoeat(kunal,pasta).
+ofColour(hair,black).
+lovestoplaygames(nawaz).
+lazy(pratisha).
+dances(lili).
+can_cook(priya).
 
-% ---- Rules (Horn clauses) -------------------------------------------------
-mortal(X) :- man(X).                 % every man is mortal
-philosopher(X) :- greek(X), man(X).  % a Greek man is a philosopher
-fallible(X) :- philosopher(X).       % every philosopher is fallible
+can_cook(jaya).
 
-% Example queries (each is proved by resolution):
-%   ?- mortal(socrates).        % true  - resolves mortal <- man <- fact
-%   ?- philosopher(socrates).   % true
-%   ?- fallible(X).             % X = socrates
-%   ?- mortal(zeus).            % false - no clause resolves to the empty clause
+can_cook(tiyasha).
 
-% ---- A driver that runs the queries and prints the resolution outcome -----
-demo :-
-    check(mortal(socrates)),
-    check(philosopher(socrates)),
-    check(fallible(plato)),
-    check(mortal(zeus)),
-    ( fallible(Who) -> format("Derived: ~w is fallible.~n", [Who]) ; true ).
+likes(priya,jaya) :- can_cook(jaya).
 
-check(Goal) :-
-    ( call(Goal) -> Result = proved ; Result = 'not proved' ),
-    format("~w : ~w~n", [Goal, Result]).
+likes(priya,tiyasha) :- can_cook(tiyasha).
+parent(sudip, piyush).
+parent(sudip, raj).
+male(piyush).
+male(raj).
+brother(X,Y) :- parent(Z,X), parent(Z,Y),male(X), male(Y).
+happy(lili) :- dances(lili).
+hungry(tom) :- search_for_food(tom).
+friends(jack, bili) :- lovesCricket(jack), lovesCricket(bili).
+goToPlay(ryan) :- isClosed(school), free(ryan).
 
-:- initialization(demo).
+
+
+father(sudip, erika).
+
+father(sudip, siya).
+
+mother(mary,erika).
+
+mother(mary,siya).
+
+female(siya).
+
+female(erika).
+
+sister(X,Y):- father(Z,X), father(Z,Y),mother(V,X), mother(V,Y), female(X), female(Y).
+
+
+
+
