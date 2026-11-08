@@ -58,11 +58,6 @@ if __name__ == "__main__":
     start = (1, 3, 2,
              5, 4, 7,
              8, 0, 6)
-
-# GOAL = (1, 2, 3,
-#         4, 5, 6,
-#         7, 8, 0)
-
     path = hill_climbing(start)
 
     if path is None:
