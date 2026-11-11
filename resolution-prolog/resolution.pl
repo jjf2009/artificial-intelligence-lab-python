@@ -1,8 +1,3 @@
-% AI Lab - Experiment 10: Logical inference using Resolution in Prolog
-
-
-
-% ---- Facts ----------------------------------------------------------------
 cat(tom).
 lovestoeat(kunal,pasta).
 ofColour(hair,black).
