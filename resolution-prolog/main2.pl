@@ -1,5 +1,11 @@
 % To identify possible diseases based on symptoms.
 
+% The same observation predicates are intentionally extended in separate
+% sections below.
+:- discontiguous has_symptom/2.
+:- discontiguous fitness_goal/2.
+:- discontiguous capability/2.
+
 % Patient symptoms
 has_symptom(amit, fever).
 has_symptom(amit, cough).
