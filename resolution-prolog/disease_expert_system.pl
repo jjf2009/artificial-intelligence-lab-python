@@ -13,20 +13,17 @@ start :-
     ).
 
 disease(Symptoms, flu) :-
-    contains(fever, Symptoms),
-    contains(cough, Symptoms),
-    contains(body_pain, Symptoms).
+    member(fever, Symptoms),
+    member(cough, Symptoms),
+    member(body_pain, Symptoms).
 
 disease(Symptoms, common_cold) :-
-    contains(sneezing, Symptoms),
-    contains(runny_nose, Symptoms),
-    contains(cough, Symptoms).
+    member(sneezing, Symptoms),
+    member(runny_nose, Symptoms),
+    member(cough, Symptoms).
 
 disease(Symptoms, food_poisoning) :-
-    contains(vomiting, Symptoms),
-    contains(stomach_pain, Symptoms),
-    contains(diarrhea, Symptoms).
+    member(vomiting, Symptoms),
+    member(stomach_pain, Symptoms),
+    member(diarrhea, Symptoms).
 
-contains(Item, [Item|_]).
-contains(Item, [_|Tail]) :-
-    contains(Item, Tail).

@@ -17,19 +17,17 @@ read_inputs(Inputs) :-
     Inputs = [I1, I2, I3, I4].
 
 exercise(Inputs, weight_loss, walking) :-
-    contains(weight_loss, Inputs),
-    contains(beginner, Inputs),
-    contains(can_walk, Inputs).
+    member(weight_loss, Inputs),
+    member(beginner, Inputs),
+    member(can_walk, Inputs).
 
 exercise(Inputs, muscle_gain, weight_training) :-
-    contains(muscle_gain, Inputs),
-    contains(intermediate, Inputs),
-    contains(can_lift_weights, Inputs).
+    member(muscle_gain, Inputs),
+    member(intermediate, Inputs),
+    member(can_lift_weights, Inputs).
 
 exercise(Inputs, flexibility, yoga) :-
-    contains(flexibility, Inputs),
-    contains(gentle_movement, Inputs),
-    contains(low_impact, Inputs).
+    member(flexibility, Inputs),
+    member(gentle_movement, Inputs),
+    member(low_impact, Inputs).
 
-contains(Item, [Item|_]).
-contains(Item, [_|Tail]) :- contains(Item, Tail).

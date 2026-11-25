@@ -17,19 +17,17 @@ read_observations(Observations) :-
     Observations = [O1, O2, O3, O4].
 
 first_aid(Symptoms, minor_cut) :-
-    contains(small_cut, Symptoms),
-    contains(minor_bleeding, Symptoms),
-    contains(conscious, Symptoms).
+    member(small_cut, Symptoms),
+    member(minor_bleeding, Symptoms),
+    member(conscious, Symptoms).
 
 first_aid(Symptoms, burn) :-
-    contains(burned_skin, Symptoms),
-    contains(pain, Symptoms),
-    contains(no_heavy_bleeding, Symptoms).
+    member(burned_skin, Symptoms),
+    member(pain, Symptoms),
+    member(no_heavy_bleeding, Symptoms).
 
 first_aid(Symptoms, sprain) :-
-    contains(swelling, Symptoms),
-    contains(joint_pain, Symptoms),
-    contains(twisting_injury, Symptoms).
+    member(swelling, Symptoms),
+    member(joint_pain, Symptoms),
+    member(twisting_injury, Symptoms).
 
-contains(Item, [Item|_]).
-contains(Item, [_|Tail]) :- contains(Item, Tail).

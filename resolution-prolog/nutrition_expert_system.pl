@@ -16,19 +16,17 @@ read_symptoms(Symptoms) :-
     Symptoms = [S1, S2, S3, S4].
 
 deficiency(Symptoms, iron_deficiency) :-
-    contains(tiredness, Symptoms),
-    contains(pale_skin, Symptoms),
-    contains(weakness, Symptoms).
+    member(tiredness, Symptoms),
+    member(pale_skin, Symptoms),
+    member(weakness, Symptoms).
 
 deficiency(Symptoms, vitamin_c_deficiency) :-
-    contains(bleeding_gums, Symptoms),
-    contains(easy_bruising, Symptoms),
-    contains(slow_healing, Symptoms).
+    member(bleeding_gums, Symptoms),
+    member(easy_bruising, Symptoms),
+    member(slow_healing, Symptoms).
 
 deficiency(Symptoms, vitamin_d_deficiency) :-
-    contains(weak_bones, Symptoms),
-    contains(muscle_pain, Symptoms),
-    contains(tiredness, Symptoms).
+    member(weak_bones, Symptoms),
+    member(muscle_pain, Symptoms),
+    member(tiredness, Symptoms).
 
-contains(Item, [Item|_]).
-contains(Item, [_|Tail]) :- contains(Item, Tail).

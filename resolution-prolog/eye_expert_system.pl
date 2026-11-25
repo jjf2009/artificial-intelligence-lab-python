@@ -16,19 +16,17 @@ read_symptoms(Symptoms) :-
     Symptoms = [S1, S2, S3, S4].
 
 eye_condition(Symptoms, allergy) :-
-    contains(itchy_eyes, Symptoms),
-    contains(watery_eyes, Symptoms),
-    contains(eye_irritation, Symptoms).
+    member(itchy_eyes, Symptoms),
+    member(watery_eyes, Symptoms),
+    member(eye_irritation, Symptoms).
 
 eye_condition(Symptoms, eye_strain) :-
-    contains(blurred_vision, Symptoms),
-    contains(screen_pain, Symptoms),
-    contains(headache, Symptoms).
+    member(blurred_vision, Symptoms),
+    member(screen_pain, Symptoms),
+    member(headache, Symptoms).
 
 eye_condition(Symptoms, conjunctivitis) :-
-    contains(red_eyes, Symptoms),
-    contains(eye_discharge, Symptoms),
-    contains(swollen_eyelids, Symptoms).
+    member(red_eyes, Symptoms),
+    member(eye_discharge, Symptoms),
+    member(swollen_eyelids, Symptoms).
 
-contains(Item, [Item|_]).
-contains(Item, [_|Tail]) :- contains(Item, Tail).
