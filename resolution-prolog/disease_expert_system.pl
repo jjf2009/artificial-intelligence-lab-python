@@ -1,26 +1,32 @@
-% Experiment 12.1: Interactive Disease Expert System
-
-ask(Question) :-write(Question), write(' (yes/no): '), read(Answer), Answer == yes.
-
-disease(flu) :-
-    ask('Do you have fever'),
-    ask('Do you have cough'),
-    ask('Do you have body pain').
-
-disease(common_cold) :-
-    ask('Are you sneezing'),
-    ask('Do you have a runny nose'),
-    ask('Do you have cough').
-
-disease(food_poisoning) :-
-    ask('Are you vomiting'),
-    ask('Do you have stomach pain'),
-    ask('Do you have diarrhea').
 
 start :-
     write('--- Disease Expert System ---'), nl,
-    ( once(disease(Result)) ->
-        write('Possible disease: '), write(Result), nl
+    write('Enter symptom 1: '), read(S1),
+    write('Enter symptom 2: '), read(S2),
+    write('Enter symptom 3: '), read(S3),
+    write('Enter symptom 4: '), read(S4),
+    Symptoms = [S1, S2, S3, S4],
+    ( disease(Symptoms, Disease) ->
+        write('Possible disease: '), write(Disease), nl
     ;
-        write('No matching disease found.'), nl
+        write('No disease found.'), nl
     ).
+
+disease(Symptoms, flu) :-
+    contains(fever, Symptoms),
+    contains(cough, Symptoms),
+    contains(body_pain, Symptoms).
+
+disease(Symptoms, common_cold) :-
+    contains(sneezing, Symptoms),
+    contains(runny_nose, Symptoms),
+    contains(cough, Symptoms).
+
+disease(Symptoms, food_poisoning) :-
+    contains(vomiting, Symptoms),
+    contains(stomach_pain, Symptoms),
+    contains(diarrhea, Symptoms).
+
+contains(Item, [Item|_]).
+contains(Item, [_|Tail]) :-
+    contains(Item, Tail).
